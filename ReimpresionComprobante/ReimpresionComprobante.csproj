@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{F65EBB48-FDE3-4187-980E-151833C7DD82}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>ProyectoReporteSaari</RootNamespace>
-    <AssemblyName>ProyectoReporteSaari</AssemblyName>
+    <RootNamespace>ReimpresionComprobante</RootNamespace>
+    <AssemblyName>ReimpresionComprobante</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,6 +36,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Y:\HERRAMIENTAS DE SOPORTE\FastReports Dlls\FastReport.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.QrCodeNet.Encoding, Version=0.4.0.0, Culture=neutral, PublicKeyToken=e8a75d24b142be49, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Gma.QrCodeNet.Encoding.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,10 +53,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLayer\Acceso.cs" />
     <Compile Include="BusinessLayer\ComprobantesDePagoEmitidos.cs" />
+    <Compile Include="BusinessLayer\Configuraciones.cs" />
+    <Compile Include="BusinessLayer\CorreoElectronico.cs" />
+    <Compile Include="BusinessLayer\Directorio.cs" />
+    <Compile Include="BusinessLayer\NumeroALetra.cs" />
+    <Compile Include="BusinessLayer\Reports\ComprobantePDF.cs" />
+    <Compile Include="BusinessLayer\Reports\NumToLetra.cs" />
+    <Compile Include="DataAccessLayer\CobranzaDAL.cs" />
+    <Compile Include="DataAccessLayer\Comprobante.cs" />
     <Compile Include="DataAccessLayer\ComprobantePagoDAL.cs" />
+    <Compile Include="DataAccessLayer\SaariDAL.cs" />
     <Compile Include="Entities\ComprobantePagoEntity.cs" />
+    <Compile Include="Entities\ComprobanteReceptorEntity.cs" />
+    <Compile Include="Entities\CorreoEntity.cs" />
     <Compile Include="Entities\DocumentosRelacionadosEntity.cs" />
+    <Compile Include="Entities\InmobiliariaEntity.cs" />
+    <Compile Include="Entities\ReciboEntity.cs" />
     <Compile Include="FormReporte.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +108,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -103,6 +122,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\buscar.png" />
+    <Content Include="Images\cancelar.png" />
+    <Content Include="Images\email.png" />
+    <Content Include="Images\pdf.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

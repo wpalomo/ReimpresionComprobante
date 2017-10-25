@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProyectoReporteSaari.Properties {
+namespace ReimpresionComprobante.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,14 +25,88 @@ namespace ProyectoReporteSaari.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DEV6\\SQLEXP2014;Initial Catalog=BD_SaariCFD;Persist Security Info=Tru" +
-            "e;User ID=sa;Password=Rt123456/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=BD_SaariCFD;Integrated Securit" +
+            "y=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationI" +
+            "ntent=ReadWrite;MultiSubnetFailover=False;User ID=sa;Password=Rt123456/")]
         public string ConnectionStringCFD {
             get {
                 return ((string)(this["ConnectionStringCFD"]));
             }
             set {
                 this["ConnectionStringCFD"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Dsn=ArrDB2;uid=SYSDBA;password=masterkey")]
+        public string ConnectionStringODBC {
+            get {
+                return ((string)(this["ConnectionStringODBC"]));
+            }
+            set {
+                this["ConnectionStringODBC"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Factura pagada")]
+        public string AsuntoCobro {
+            get {
+                return ((string)(this["AsuntoCobro"]));
+            }
+            set {
+                this["AsuntoCobro"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("El pago de la factura electrónica fue registrado correctamente. Adjunto se encuen" +
+            "tra el CFDi con su respectiva representación impresa. Gracias")]
+        public string CuerpoCobro {
+            get {
+                return ((string)(this["CuerpoCobro"]));
+            }
+            set {
+                this["CuerpoCobro"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("valorSMTPSSL")]
+        public string habilitarSMTPSSL {
+            get {
+                return ((string)(this["habilitarSMTPSSL"]));
+            }
+            set {
+                this["habilitarSMTPSSL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\SaariDB\\Formatos\\FormatoComprobantePago.frx")]
+        public string FormatoComprobantePago {
+            get {
+                return ((string)(this["FormatoComprobantePago"]));
+            }
+            set {
+                this["FormatoComprobantePago"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\Images\\cbbqrcodeImage.png")]
+        public string cbbqrcodeImage {
+            get {
+                return ((string)(this["cbbqrcodeImage"]));
+            }
+            set {
+                this["cbbqrcodeImage"] = value;
             }
         }
     }

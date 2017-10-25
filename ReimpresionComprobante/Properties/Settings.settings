@@ -3,7 +3,25 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectionStringCFD" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Data Source=DEV6\SQLEXP2014;Initial Catalog=BD_SaariCFD;Persist Security Info=True;User ID=sa;Password=Rt123456/</Value>
+      <Value Profile="(Default)">Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BD_SaariCFD;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False;User ID=sa;Password=Rt123456/</Value>
+    </Setting>
+    <Setting Name="ConnectionStringODBC" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dsn=ArrDB2;uid=SYSDBA;password=masterkey</Value>
+    </Setting>
+    <Setting Name="AsuntoCobro" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Factura pagada</Value>
+    </Setting>
+    <Setting Name="CuerpoCobro" Type="System.String" Scope="User">
+      <Value Profile="(Default)">El pago de la factura electrónica fue registrado correctamente. Adjunto se encuentra el CFDi con su respectiva representación impresa. Gracias</Value>
+    </Setting>
+    <Setting Name="habilitarSMTPSSL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">valorSMTPSSL</Value>
+    </Setting>
+    <Setting Name="FormatoComprobantePago" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\SaariDB\Formatos\FormatoComprobantePago.frx</Value>
+    </Setting>
+    <Setting Name="cbbqrcodeImage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\Images\cbbqrcodeImage.png</Value>
     </Setting>
   </Settings>
 </SettingsFile>

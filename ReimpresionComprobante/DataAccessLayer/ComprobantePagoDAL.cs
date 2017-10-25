@@ -14,7 +14,7 @@ namespace ReimpresionComprobante.DataAccessLayer
     public class ComprobantePagoDAL
     {
         public string MsgError = string.Empty;
-        public string CadenaDeConexion { get { return Properties.Settings.Default.ConnectionStringCFD; } }
+        public string CadenaDeConexion { get { return Properties.Settings.Default.ConnectionStringCFD; } }        
 
         private DataTable SqlQuery(string sql)
         {
@@ -64,13 +64,13 @@ namespace ReimpresionComprobante.DataAccessLayer
                         foreach (DataRow row in dt.Rows)
                         {
                             ComprobantePagoEntity pago = new ComprobantePagoEntity();
-                            pago.IDComprobante = Convert.ToInt32(row["ID_ComprobantePago"]);
+                            //pago.IDComprobante = Convert.ToInt32(row["ID_ComprobantePago"]);
                             pago.Serie = row["Serie"].ToString();
                             pago.Folio = Convert.ToInt32(row["Folio"]);
-                            pago.Fecha = Convert.ToDateTime(row["Fecha"]);
-                            pago.FormaDePago = row["FormaPago"].ToString();
+                            //pago.Fecha = Convert.ToDateTime(row["Fecha"]);
+                            //pago.FormaDePago = row["FormaPago"].ToString();
                             pago.Moneda = row["Moneda"].ToString();
-                            pago.TipoDeCambio = Convert.ToDecimal(row["TipoCambio"]);
+                            //pago.TipoDeCambio = Convert.ToDecimal(row["TipoCambio"]);
                             pago.Total = Convert.ToDecimal(row["Total"]);
                             listaComprobantes.Add(pago);
                             if (pct <= 80)

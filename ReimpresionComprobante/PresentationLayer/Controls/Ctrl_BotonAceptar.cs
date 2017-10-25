@@ -20,13 +20,13 @@ namespace ReimpresionComprobante.PresentationLayer.Controls
             InitializeComponent();
             FondoColor = BackColor;
             this.Click += new EventHandler(controlClick);
-            label1.Click += new EventHandler(controlClick);
+            //label1.Click += new EventHandler(controlClick);
             pictureBox1.Click += new EventHandler(controlClick);
             this.MouseEnter += new EventHandler(controlMouseEnter);
-            label1.MouseEnter += new EventHandler(controlMouseEnter);
+            //label1.MouseEnter += new EventHandler(controlMouseEnter);
             pictureBox1.MouseEnter += new EventHandler(controlMouseEnter);
             this.MouseLeave += new EventHandler(controlMouseLeave);
-            label1.MouseLeave += new EventHandler(controlMouseLeave);
+            //label1.MouseLeave += new EventHandler(controlMouseLeave);
             pictureBox1.MouseLeave += new EventHandler(controlMouseLeave);
         }
 
