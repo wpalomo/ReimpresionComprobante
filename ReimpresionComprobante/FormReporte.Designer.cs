@@ -203,15 +203,17 @@
             // 
             // textBoxCliente
             // 
+            this.textBoxCliente.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.textBoxCliente.Location = new System.Drawing.Point(116, 116);
             this.textBoxCliente.Name = "textBoxCliente";
             this.textBoxCliente.Size = new System.Drawing.Size(481, 20);
             this.textBoxCliente.TabIndex = 26;
+            this.textBoxCliente.TextChanged += new System.EventHandler(this.textBoxCliente_TextChanged);
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(30, 401);
+            this.checkBox1.Location = new System.Drawing.Point(15, 406);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(113, 17);
             this.checkBox1.TabIndex = 28;
@@ -221,7 +223,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(162, 400);
+            this.checkBox2.Location = new System.Drawing.Point(157, 406);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(107, 17);
             this.checkBox2.TabIndex = 29;

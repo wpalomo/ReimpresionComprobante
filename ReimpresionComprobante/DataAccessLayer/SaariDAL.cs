@@ -187,6 +187,78 @@ FROM GRUPOS WHERE USUARIO = ?";
             }
         }
 
+        public List<int> getRecibos(string arrendadora)
+        {
+            OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
+            List<int> listareciboa = new List<int>();
+
+            try
+            {
+                string sql = @"select CAMPO_NUM5 from T24_HISTORIA_RECIBOS 
+Where P2406_STATUS = 2 And P2401_ID_ARRENDADORA = '" + arrendadora + "' And CAMPO_NUM5 is not null And CAMPO_NUM5 > 0 Order By CAMPO_NUM5"; ;
+                                
+                OdbcCommand comando = new OdbcCommand(sql, conexion);
+                conexion.Open();
+                OdbcDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    var elemento = reader["CAMPO_NUM5"];
+                    if (elemento == DBNull.Value)
+                    {
+                        listareciboa.Add(-1);
+                    }
+                    else
+                    {
+                        if (int.TryParse(elemento.ToString(), out int value))
+                        {
+                            listareciboa.Add(Convert.ToInt32(value));
+                        }
+                        else
+                        {
+                            var elDecimal = Convert.ToDouble(elemento.ToString());
+                            listareciboa.Add((int)elDecimal);
+                        }
+                    }
+
+                }
+                reader.Close();
+                conexion.Close();
+                return listareciboa;
+            }
+            catch 
+            {
+                conexion.Close();
+                return null;
+            }
+        }
+
+        public string getDatosCliente(string ID_Cliente)
+        {
+            OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
+            string result = "";
+            try
+            {
+                string sql = @"SELECT T02_ARRENDATARIO.P0203_NOMBRE, T02_ARRENDATARIO.P0204_RFC
+FROM T02_ARRENDATARIO
+WHERE T02_ARRENDATARIO.P0201_ID =  '" + ID_Cliente + "'";
+
+                OdbcCommand comando = new OdbcCommand(sql, conexion);
+                conexion.Open();
+                OdbcDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = reader["P0203_NOMBRE"].ToString();
+                    
+                }
+                reader.Close();
+                conexion.Close();
+            }
+            catch 
+            {
+                conexion.Close();
+            }
+            return result;
+        }
 
 
 

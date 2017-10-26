@@ -18,6 +18,7 @@ namespace ReimpresionComprobante.DataAccessLayer
         public static string mensajeError = "";
         public static bool error = false;
         public static string user = string.Empty;
+        private SaariDAL inmoDAL = null;
 
 
         public CobranzaDAL(string cadenaDeConexion, string usuario)
@@ -25,6 +26,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             this.cadenaDeConexion = cadenaDeConexion;
             this.usuario = usuario;
             user = this.usuario;
+            inmoDAL = new SaariDAL(Configuraciones.CadenaConexionODBC, user, cadenaDeConexion);
         }
 
         //public void insertLog(string tipoAccion, string nombreTabla, int idRelacionado, string descripcion, bool esError)
@@ -682,17 +684,16 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
                 SqlDataReader reader = comando.ExecuteReader();
                 while (reader.Read())
                 {
-                    elComprobante.Moneda = reader["Moneda"].ToString();//== DBNull.Value ? 0 : Convert.ToDecimal(reader["CAMPO_NUM14"]);
+                    elComprobante.Moneda = reader["Moneda"].ToString();
                     elComprobante.TipoCambio = reader["TipoDeCambio"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["TipoDeCambio"]);
                     elComprobante.Total = reader["Total"] == DBNull.Value ? 0 : Convert.ToDecimal(reader["Total"]);
                 }
                 reader.Close();
                 conexion.Close();
             }
-            catch (Exception ex)
+            catch
             {
-                conexion.Close();
-                //insertLog("Consultar", "cfd.ComplementoPago", 0, string.Format("Error al consultar cfd.ComplementoPago con ID {0}. Excepción: {1}", ID_comrpobante, ex.Message), true);
+                conexion.Close();                
             }
             return elComprobante;
         }
@@ -1478,6 +1479,8 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
 
         public List<DatosGridEntity> getDatosGrid(FiltrosEntity elFiltro)
         {
+            List<int> listarecibos = inmoDAL.getRecibos(elFiltro.Inmobiliaria);
+
             List<DatosGridEntity> listaDatosGrid = new List<DatosGridEntity>();
 
             string sql = @"SELECT        
@@ -1487,7 +1490,8 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
 	cfd.ComprobantePago.Fecha AS FechaEmision, 
 	cfd.ComprobantePago.ID_Cliente, 
 	cfd.ComprobantePago.Moneda,
-	cfd.ComprobantePago.Total
+	cfd.ComprobantePago.Total,
+    cfd.ComprobantePago.IDPago
 FROM 
 	cfd.ComprobantePago 
 	INNER JOIN cfd.TimbreDigital ON cfd.ComprobantePago.IDTimbreDigital = cfd.TimbreDigital.ID_Timbre 
@@ -1513,16 +1517,23 @@ FROM
                     {
                         foreach (DataRow row in dt.Rows)
                         {
-                            DatosGridEntity elDato = new DatosGridEntity();
-                            elDato.ID = Convert.ToInt32(row["ID"]);
-                            elDato.Serie = row["Serie"].ToString();
-                            elDato.Folio = Convert.ToInt32(row["Folio"]);
-                            elDato.FechaEmision = Convert.ToDateTime(row["FechaEmision"]);
-                            elDato.Cliente = row["ID_Cliente"].ToString();
-                            elDato.Moneda = row["Moneda"].ToString();
-                            elDato.Total = Convert.ToDecimal(row["Total"]);
+                            var elRecibo = Convert.ToInt32(row["IDPago"]);
+                            if (listarecibos.Contains(elRecibo))
+                            {                                
+                                DatosGridEntity elDato = new DatosGridEntity
+                                {
+                                    ID = Convert.ToInt32(row["ID"]),
+                                    Serie = row["Serie"].ToString(),
+                                    Folio = Convert.ToInt32(row["Folio"]),
+                                    FechaEmision = Convert.ToDateTime(row["FechaEmision"]),
+                                    Cliente = inmoDAL.getDatosCliente(row["ID_Cliente"].ToString().Trim()),
+                                    Moneda = row["Moneda"].ToString(),
+                                    Total = Convert.ToDecimal(row["Total"])
+                                };
 
-                            listaDatosGrid.Add(elDato);
+                                listaDatosGrid.Add(elDato);
+                            }
+
                         }
                     }
                 }
@@ -1547,7 +1558,7 @@ FROM
             {
                 string cadOriginal = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@uuid", System.Data.SqlDbType.NVarChar).Value = UUID;
+                comando.Parameters.Add("@uuid", SqlDbType.NVarChar).Value = UUID;
                 conexion.Open();
                 cadOriginal = comando.ExecuteScalar().ToString();
                 conexion.Close();
@@ -1568,7 +1579,7 @@ FROM
             {
                 string logo = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@IDContribuyente", System.Data.SqlDbType.Int).Value = IDContribuyente;
+                comando.Parameters.Add("@IDContribuyente", SqlDbType.Int).Value = IDContribuyente;
                 conexion.Open();
                 logo = comando.ExecuteScalar().ToString();
                 conexion.Close();
@@ -1589,7 +1600,7 @@ FROM
             {
                 string cedula = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@IDContribuyente", System.Data.SqlDbType.Int).Value = IDContribuyente;
+                comando.Parameters.Add("@IDContribuyente", SqlDbType.Int).Value = IDContribuyente;
                 conexion.Open();
                 cedula = comando.ExecuteScalar().ToString();
                 conexion.Close();
@@ -1610,7 +1621,7 @@ FROM
             {
                 string cedula = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@claveRegimen", System.Data.SqlDbType.NVarChar).Value = claveRegimen;
+                comando.Parameters.Add("@claveRegimen", SqlDbType.NVarChar).Value = claveRegimen;
                 conexion.Open();
                 cedula = comando.ExecuteScalar().ToString();
                 conexion.Close();
@@ -1631,7 +1642,7 @@ FROM
             {
                 string cedula = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@FormaPago", System.Data.SqlDbType.NVarChar).Value = formaPago;
+                comando.Parameters.Add("@FormaPago", SqlDbType.NVarChar).Value = formaPago;
                 conexion.Open();
                 cedula = comando.ExecuteScalar().ToString();
                 conexion.Close();
@@ -1655,7 +1666,7 @@ FROM
                 string forma = string.Empty;
                 string descripcion = string.Empty;
                 SqlCommand comando = new SqlCommand(sql, conexion);
-                comando.Parameters.Add("@IdComprobante", System.Data.SqlDbType.Int).Value = idComprobante;
+                comando.Parameters.Add("@IdComprobante", SqlDbType.Int).Value = idComprobante;
                 conexion.Open();
                 SqlDataReader reader = comando.ExecuteReader();
                 while (reader.Read())

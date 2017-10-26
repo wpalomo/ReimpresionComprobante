@@ -19,6 +19,7 @@ namespace ReimpresionComprobante
         private string Result = string.Empty;
         private SaariDAL inmoDAL = null;
         private CobranzaDAL cobranzaDAL = null;
+        private List<DatosGridEntity> list;
 
         private InmobiliariaEntity inmobiliariaSeleccionada = new InmobiliariaEntity();
 
@@ -103,6 +104,7 @@ namespace ReimpresionComprobante
             {
                 Cursor.Current = Cursors.WaitCursor;
                 elFiltro = new FiltrosEntity();
+                textBoxCliente.Clear();
 
                 var lainmo = inmobiliariaSeleccionada.ID;
                 var nominmo = inmobiliariaSeleccionada.RazonSocial;
@@ -127,13 +129,29 @@ namespace ReimpresionComprobante
                     }
                 }
                 elFiltro.Cliente = textBoxCliente.Text;
-
-                var source = new BindingSource();
-                List<DatosGridEntity> list; 
-
+                
                 list = cobranzaDAL.getDatosGrid(elFiltro);
+                setGridSource(list);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + Environment.NewLine + ex.Message, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor.Current = cursorActual;
+            }
+            //bgWorkerReporte.RunWorkerAsync();
+        }
 
-                source.DataSource = list;
+        private void setGridSource(List<DatosGridEntity> laLista)
+        {
+            try
+            {
+                var source = new BindingSource
+                {
+                    DataSource = laLista
+                };
                 dataGridView1.DataSource = source;
 
                 dataGridView1.Columns[0].Width = 50;//ID
@@ -162,11 +180,6 @@ namespace ReimpresionComprobante
             {
                 MessageBox.Show("Error: " + Environment.NewLine + ex.Message, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally
-            {
-                Cursor.Current = cursorActual;
-            }
-            //bgWorkerReporte.RunWorkerAsync();
         }
 
         private void comboBoxInmobiliaria_SelectedIndexChanged(object sender, EventArgs e)
@@ -197,9 +210,40 @@ namespace ReimpresionComprobante
                     Decimal.Parse(Expression.ToString());
                 return true;
             }
-            catch { } // descartar errores y retornar falso
+            catch { } 
             return false;
         }
+
+        private void textBoxCliente_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (list != null)
+                {
+                    if(list.Count > 0)
+                    {
+                        if (sender is TextBox textBox)
+                        {
+                            string theText = textBox.Text;
+                            if(theText.Length > 0)
+                            {
+                                List<DatosGridEntity> listaLocal = list.Where(s => s.Cliente.Contains(theText)).ToList();
+                                setGridSource(listaLocal);
+                            }
+                            else
+                            {
+                                setGridSource(list);
+                            }
+                        }
+                    }                                        
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + Environment.NewLine + ex.Message, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
 
     }
