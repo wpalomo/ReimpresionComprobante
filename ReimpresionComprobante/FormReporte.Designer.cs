@@ -46,12 +46,16 @@
             this.textBoxSerieDel = new System.Windows.Forms.TextBox();
             this.textBoxSerieAl = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxCliente = new System.Windows.Forms.TextBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.buttonBuscar = new System.Windows.Forms.Button();
+            this.buttonPDF = new System.Windows.Forms.Button();
+            this.buttonCorreo = new System.Windows.Forms.Button();
+            this.buttonCancelar = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ctrl_BotonCancelar1 = new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonCancelar();
             this.ctrl_BotonAceptar1 = new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonAceptar();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,7 +63,7 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(15, 452);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(336, 23);
+            this.progressBar1.Size = new System.Drawing.Size(334, 23);
             this.progressBar1.TabIndex = 7;
             // 
             // label1
@@ -86,6 +90,7 @@
             this.comboBoxInmobiliaria.Name = "comboBoxInmobiliaria";
             this.comboBoxInmobiliaria.Size = new System.Drawing.Size(522, 21);
             this.comboBoxInmobiliaria.TabIndex = 12;
+            this.comboBoxInmobiliaria.SelectedIndexChanged += new System.EventHandler(this.comboBoxInmobiliaria_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -142,7 +147,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(233, 68);
+            this.label6.Location = new System.Drawing.Point(233, 65);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(31, 13);
             this.label6.TabIndex = 19;
@@ -196,42 +201,12 @@
             this.label9.TabIndex = 25;
             this.label9.Text = "Filtrar por Cliente";
             // 
-            // textBox1
+            // textBoxCliente
             // 
-            this.textBox1.Location = new System.Drawing.Point(116, 116);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(481, 20);
-            this.textBox1.TabIndex = 26;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 151);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(585, 229);
-            this.dataGridView1.TabIndex = 27;
-            // 
-            // ctrl_BotonCancelar1
-            // 
-            this.ctrl_BotonCancelar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.ctrl_BotonCancelar1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ctrl_BotonCancelar1.FondoColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.ctrl_BotonCancelar1.Location = new System.Drawing.Point(524, 400);
-            this.ctrl_BotonCancelar1.Name = "ctrl_BotonCancelar1";
-            this.ctrl_BotonCancelar1.Size = new System.Drawing.Size(75, 75);
-            this.ctrl_BotonCancelar1.TabIndex = 11;
-            this.ctrl_BotonCancelar1.ControlClicked += new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonCancelar.ControlClickedHandler(this.ctrl_BotonCancelar1_ControlClicked);
-            // 
-            // ctrl_BotonAceptar1
-            // 
-            this.ctrl_BotonAceptar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.ctrl_BotonAceptar1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.ctrl_BotonAceptar1.FondoColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.ctrl_BotonAceptar1.Location = new System.Drawing.Point(524, 34);
-            this.ctrl_BotonAceptar1.Name = "ctrl_BotonAceptar1";
-            this.ctrl_BotonAceptar1.Size = new System.Drawing.Size(75, 75);
-            this.ctrl_BotonAceptar1.TabIndex = 0;
-            this.ctrl_BotonAceptar1.ControlClicked += new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonAceptar.ControlClickedHandler(this.ctrl_BotonAceptar1_ControlClicked);
+            this.textBoxCliente.Location = new System.Drawing.Point(116, 116);
+            this.textBoxCliente.Name = "textBoxCliente";
+            this.textBoxCliente.Size = new System.Drawing.Size(481, 20);
+            this.textBoxCliente.TabIndex = 26;
             // 
             // checkBox1
             // 
@@ -253,16 +228,94 @@
             this.checkBox2.Text = "Enviar por correo";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
+            // buttonBuscar
+            // 
+            this.buttonBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonBuscar.BackgroundImage")));
+            this.buttonBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonBuscar.Location = new System.Drawing.Point(524, 41);
+            this.buttonBuscar.Name = "buttonBuscar";
+            this.buttonBuscar.Size = new System.Drawing.Size(75, 70);
+            this.buttonBuscar.TabIndex = 30;
+            this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Click += new System.EventHandler(this.buttonBuscar_Click);
+            // 
+            // buttonPDF
+            // 
+            this.buttonPDF.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonPDF.BackgroundImage")));
+            this.buttonPDF.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonPDF.Location = new System.Drawing.Point(355, 406);
+            this.buttonPDF.Name = "buttonPDF";
+            this.buttonPDF.Size = new System.Drawing.Size(75, 70);
+            this.buttonPDF.TabIndex = 31;
+            this.buttonPDF.UseVisualStyleBackColor = true;
+            // 
+            // buttonCorreo
+            // 
+            this.buttonCorreo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonCorreo.BackgroundImage")));
+            this.buttonCorreo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonCorreo.Location = new System.Drawing.Point(439, 406);
+            this.buttonCorreo.Name = "buttonCorreo";
+            this.buttonCorreo.Size = new System.Drawing.Size(75, 70);
+            this.buttonCorreo.TabIndex = 32;
+            this.buttonCorreo.UseVisualStyleBackColor = true;
+            // 
+            // buttonCancelar
+            // 
+            this.buttonCancelar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonCancelar.BackgroundImage")));
+            this.buttonCancelar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.buttonCancelar.Location = new System.Drawing.Point(522, 406);
+            this.buttonCancelar.Name = "buttonCancelar";
+            this.buttonCancelar.Size = new System.Drawing.Size(75, 70);
+            this.buttonCancelar.TabIndex = 33;
+            this.buttonCancelar.UseVisualStyleBackColor = true;
+            this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 142);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(590, 252);
+            this.dataGridView1.TabIndex = 34;
+            // 
+            // ctrl_BotonCancelar1
+            // 
+            this.ctrl_BotonCancelar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
+            this.ctrl_BotonCancelar1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ctrl_BotonCancelar1.FondoColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
+            this.ctrl_BotonCancelar1.Location = new System.Drawing.Point(539, 400);
+            this.ctrl_BotonCancelar1.Name = "ctrl_BotonCancelar1";
+            this.ctrl_BotonCancelar1.Size = new System.Drawing.Size(75, 75);
+            this.ctrl_BotonCancelar1.TabIndex = 11;
+            this.ctrl_BotonCancelar1.Visible = false;
+            this.ctrl_BotonCancelar1.ControlClicked += new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonCancelar.ControlClickedHandler(this.ctrl_BotonCancelar1_ControlClicked);
+            // 
+            // ctrl_BotonAceptar1
+            // 
+            this.ctrl_BotonAceptar1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
+            this.ctrl_BotonAceptar1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.ctrl_BotonAceptar1.FondoColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
+            this.ctrl_BotonAceptar1.Location = new System.Drawing.Point(539, 429);
+            this.ctrl_BotonAceptar1.Name = "ctrl_BotonAceptar1";
+            this.ctrl_BotonAceptar1.Size = new System.Drawing.Size(75, 75);
+            this.ctrl_BotonAceptar1.TabIndex = 0;
+            this.ctrl_BotonAceptar1.Visible = false;
+            this.ctrl_BotonAceptar1.ControlClicked += new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonAceptar.ControlClickedHandler(this.ctrl_BotonAceptar1_ControlClicked);
+            // 
             // FormReporte
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
-            this.ClientSize = new System.Drawing.Size(614, 516);
+            this.ClientSize = new System.Drawing.Size(614, 485);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.buttonCancelar);
+            this.Controls.Add(this.buttonCorreo);
+            this.Controls.Add(this.buttonPDF);
+            this.Controls.Add(this.buttonBuscar);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxCliente);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBoxSerieAl);
             this.Controls.Add(this.textBoxSerieDel);
@@ -316,10 +369,14 @@
         private System.Windows.Forms.TextBox textBoxSerieDel;
         private System.Windows.Forms.TextBox textBoxSerieAl;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.TextBox textBoxCliente;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Button buttonBuscar;
+        private System.Windows.Forms.Button buttonPDF;
+        private System.Windows.Forms.Button buttonCorreo;
+        private System.Windows.Forms.Button buttonCancelar;
+        private System.Windows.Forms.DataGridView dataGridView1;
     }
 }
 

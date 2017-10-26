@@ -1451,6 +1451,90 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
         //            return 0;
         //        }
 
+        private DataTable SqlQuery(string sql)
+        {
+            using (SqlConnection conexion = new SqlConnection(cadenaDeConexion))
+            {
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                DataTable dtResult = new DataTable();
+                try
+                {
+                    conexion.Open();
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                        dtResult.Load(reader);
+                        reader.Close();
+                    }
+
+                }
+                catch
+                {
+                    dtResult = new DataTable();
+                }
+                conexion.Close();
+                return dtResult;
+            }
+        }
+
+        public List<DatosGridEntity> getDatosGrid(FiltrosEntity elFiltro)
+        {
+            List<DatosGridEntity> listaDatosGrid = new List<DatosGridEntity>();
+
+            string sql = @"SELECT        
+	cfd.ComprobantePago.ID_ComprobantePago As ID,
+	cfd.ComprobantePago.Serie, 
+	cfd.ComprobantePago.Folio, 
+	cfd.ComprobantePago.Fecha AS FechaEmision, 
+	cfd.ComprobantePago.ID_Cliente, 
+	cfd.ComprobantePago.Moneda,
+	cfd.ComprobantePago.Total
+FROM 
+	cfd.ComprobantePago 
+	INNER JOIN cfd.TimbreDigital ON cfd.ComprobantePago.IDTimbreDigital = cfd.TimbreDigital.ID_Timbre 
+	INNER JOIN Cobranza.Pago ON cfd.ComprobantePago.IDPago = Cobranza.Pago.IDPago
+    INNER JOIN cfd.ComplementoPago ON cfd.ComplementoPago.ID_ComprobantePago = cfd.ComprobantePago.ID_ComprobantePago";
+
+            sql += " WHERE cfd.ComprobantePago.[Fecha] >= '" + elFiltro.FechaDel.ToShortDateString() + "' AND cfd.ComprobantePago.[Fecha] <= '" + elFiltro.FechaAl.ToShortDateString() + "'";
+            if(elFiltro.Serie.Length > 0)
+            {
+                sql += " AND cfd.ComprobantePago.Serie = '" + elFiltro.Serie + "'";
+            }
+            if(elFiltro.SerieDel > 0 && elFiltro.SerieAl > 0 && elFiltro.SerieDel <= elFiltro.SerieAl)
+            {
+                sql += " AND cfd.ComprobantePago.Folio >= " + elFiltro.SerieDel.ToString() + " AND cfd.ComprobantePago.Folio <= " + elFiltro.SerieAl.ToString();
+            }
+
+            DataTable dt = SqlQuery(sql);
+            if (dt != null)
+            {
+                try
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            DatosGridEntity elDato = new DatosGridEntity();
+                            elDato.ID = Convert.ToInt32(row["ID"]);
+                            elDato.Serie = row["Serie"].ToString();
+                            elDato.Folio = Convert.ToInt32(row["Folio"]);
+                            elDato.FechaEmision = Convert.ToDateTime(row["FechaEmision"]);
+                            elDato.Cliente = row["ID_Cliente"].ToString();
+                            elDato.Moneda = row["Moneda"].ToString();
+                            elDato.Total = Convert.ToDecimal(row["Total"]);
+
+                            listaDatosGrid.Add(elDato);
+                        }
+                    }
+                }
+                catch
+                {
+                    listaDatosGrid = new List<DatosGridEntity>();
+                }
+            }
+
+            return listaDatosGrid;
+        }
+
         public string getCadenaOriginal(string UUID)
         {
             SqlConnection conexion = new SqlConnection(cadenaDeConexion);

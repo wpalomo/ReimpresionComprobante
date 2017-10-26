@@ -68,7 +68,9 @@
     <Compile Include="Entities\ComprobantePagoEntity.cs" />
     <Compile Include="Entities\ComprobanteReceptorEntity.cs" />
     <Compile Include="Entities\CorreoEntity.cs" />
+    <Compile Include="Entities\DatosGridEntity.cs" />
     <Compile Include="Entities\DocumentosRelacionadosEntity.cs" />
+    <Compile Include="Entities\FiltrosEntity.cs" />
     <Compile Include="Entities\InmobiliariaEntity.cs" />
     <Compile Include="Entities\ReciboEntity.cs" />
     <Compile Include="FormReporte.cs">
