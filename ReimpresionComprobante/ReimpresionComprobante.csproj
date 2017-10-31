@@ -59,8 +59,10 @@
     <Compile Include="BusinessLayer\CorreoElectronico.cs" />
     <Compile Include="BusinessLayer\Directorio.cs" />
     <Compile Include="BusinessLayer\NumeroALetra.cs" />
+    <Compile Include="BusinessLayer\ReimpresionComprobantes.cs" />
     <Compile Include="BusinessLayer\Reports\ComprobantePDF.cs" />
     <Compile Include="BusinessLayer\Reports\NumToLetra.cs" />
+    <Compile Include="BusinessLayer\XMLManager.cs" />
     <Compile Include="DataAccessLayer\CobranzaDAL.cs" />
     <Compile Include="DataAccessLayer\Comprobante.cs" />
     <Compile Include="DataAccessLayer\ComprobantePagoDAL.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Entities\FiltrosEntity.cs" />
     <Compile Include="Entities\InmobiliariaEntity.cs" />
     <Compile Include="Entities\ReciboEntity.cs" />
+    <Compile Include="Entities\RutaContenidoXmlEntity.cs" />
     <Compile Include="FormReporte.cs">
       <SubType>Form</SubType>
     </Compile>

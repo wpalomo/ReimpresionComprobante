@@ -412,11 +412,17 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
             try
             {
 
-                string rutaGuardar = PathSave;// Properties.Settings.Default.RutaRepositorio;
+                string rutaGuardar = Path.GetDirectoryName(PathSave);// Properties.Settings.Default.RutaRepositorio;
                                               // rutaGuardar = rutaGuardar.EndsWith(@"\") ? rutaGuardar + nombreReporte + @"\" : rutaGuardar + @"\" + nombreReporte + @"\";
 
-                if (!Directory.Exists(rutaGuardar))
-                    Directory.CreateDirectory(rutaGuardar);
+                //if (!Directory.Exists(rutaGuardar))
+                //    Directory.CreateDirectory(rutaGuardar);
+
+                //string pathXml = Path.GetDirectoryName(rutaContenidoXml.Ruta);
+
+                Directory.CreateDirectory(rutaGuardar);
+
+
                 reporte.Prepare();
                 string filename = string.Empty;
                 if (esPdf)

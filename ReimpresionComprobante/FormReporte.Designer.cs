@@ -53,10 +53,10 @@
             this.buttonPDF = new System.Windows.Forms.Button();
             this.buttonCorreo = new System.Windows.Forms.Button();
             this.buttonCancelar = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewComprobantes = new System.Windows.Forms.DataGridView();
             this.ctrl_BotonCancelar1 = new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonCancelar();
             this.ctrl_BotonAceptar1 = new ReimpresionComprobante.PresentationLayer.Controls.Ctrl_BotonAceptar();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewComprobantes)).BeginInit();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -250,6 +250,7 @@
             this.buttonPDF.Size = new System.Drawing.Size(75, 70);
             this.buttonPDF.TabIndex = 31;
             this.buttonPDF.UseVisualStyleBackColor = true;
+            this.buttonPDF.Click += new System.EventHandler(this.buttonPDF_Click);
             // 
             // buttonCorreo
             // 
@@ -265,20 +266,22 @@
             // 
             this.buttonCancelar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("buttonCancelar.BackgroundImage")));
             this.buttonCancelar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.buttonCancelar.Location = new System.Drawing.Point(522, 406);
+            this.buttonCancelar.Location = new System.Drawing.Point(524, 406);
             this.buttonCancelar.Name = "buttonCancelar";
             this.buttonCancelar.Size = new System.Drawing.Size(75, 70);
             this.buttonCancelar.TabIndex = 33;
             this.buttonCancelar.UseVisualStyleBackColor = true;
             this.buttonCancelar.Click += new System.EventHandler(this.buttonCancelar_Click);
             // 
-            // dataGridView1
+            // dataGridViewComprobantes
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 142);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(590, 252);
-            this.dataGridView1.TabIndex = 34;
+            this.dataGridViewComprobantes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewComprobantes.Location = new System.Drawing.Point(12, 142);
+            this.dataGridViewComprobantes.Name = "dataGridViewComprobantes";
+            this.dataGridViewComprobantes.Size = new System.Drawing.Size(587, 252);
+            this.dataGridViewComprobantes.TabIndex = 34;
+            this.dataGridViewComprobantes.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewComprobantes_CellMouseDoubleClick);
+            this.dataGridViewComprobantes.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewComprobantes_KeyDown);
             // 
             // ctrl_BotonCancelar1
             // 
@@ -310,7 +313,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(230)))), ((int)(((byte)(240)))));
             this.ClientSize = new System.Drawing.Size(614, 485);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewComprobantes);
             this.Controls.Add(this.buttonCancelar);
             this.Controls.Add(this.buttonCorreo);
             this.Controls.Add(this.buttonPDF);
@@ -344,7 +347,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Reimpresión de Comprobantes de Pago";
             this.Load += new System.EventHandler(this.FormReporte_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewComprobantes)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -378,7 +381,7 @@
         private System.Windows.Forms.Button buttonPDF;
         private System.Windows.Forms.Button buttonCorreo;
         private System.Windows.Forms.Button buttonCancelar;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewComprobantes;
     }
 }
 

@@ -17,9 +17,8 @@ namespace ReimpresionComprobante
     {
         private string NombreUsuario { get; set; }
         private string Result = string.Empty;
-        private SaariDAL inmoDAL = null;
-        private CobranzaDAL cobranzaDAL = null;
         private List<DatosGridEntity> list;
+        private ReimpresionComprobantes reimpre = null;
 
         private InmobiliariaEntity inmobiliariaSeleccionada = new InmobiliariaEntity();
 
@@ -31,8 +30,7 @@ namespace ReimpresionComprobante
             Configuraciones.CadenaConexionSQLServer = Properties.Settings.Default.ConnectionStringCFD;
             Configuraciones.Asunto = Properties.Settings.Default.AsuntoCobro;
             Configuraciones.Cuerpo = Properties.Settings.Default.CuerpoCobro;
-            inmoDAL = new SaariDAL(Configuraciones.CadenaConexionODBC, Acceso.Usuario, Configuraciones.CadenaConexionSQLServer);
-            cobranzaDAL = new CobranzaDAL(Configuraciones.CadenaConexionSQLServer, Acceso.Usuario);
+            reimpre = new ReimpresionComprobantes(Configuraciones.CadenaConexionODBC, Acceso.Usuario, Configuraciones.CadenaConexionSQLServer);
         }
         
 
@@ -81,9 +79,9 @@ namespace ReimpresionComprobante
                 dateInicio.Value = fechaInicio;
                 dateFin.Value = fechaFin;
 
-                comboBoxInmobiliaria.DataSource = inmoDAL.getInmobiliarias();
+                comboBoxInmobiliaria.DataSource = reimpre.GetInmobiliarias();
                 comboBoxInmobiliaria.ValueMember = "ID";
-                comboBoxInmobiliaria.DisplayMember = "RazonSocial";
+                comboBoxInmobiliaria.DisplayMember = "NombreComercial";
             }
             catch (Exception ex)
             {
@@ -130,8 +128,8 @@ namespace ReimpresionComprobante
                 }
                 elFiltro.Cliente = textBoxCliente.Text;
                 
-                list = cobranzaDAL.getDatosGrid(elFiltro);
-                setGridSource(list);
+                list = reimpre.GetDatosGrid(elFiltro);
+                SetGridSource(list);
             }
             catch (Exception ex)
             {
@@ -144,7 +142,7 @@ namespace ReimpresionComprobante
             //bgWorkerReporte.RunWorkerAsync();
         }
 
-        private void setGridSource(List<DatosGridEntity> laLista)
+        private void SetGridSource(List<DatosGridEntity> laLista)
         {
             try
             {
@@ -152,29 +150,31 @@ namespace ReimpresionComprobante
                 {
                     DataSource = laLista
                 };
-                dataGridView1.DataSource = source;
+                dataGridViewComprobantes.DataSource = source;
 
-                dataGridView1.Columns[0].Width = 50;//ID
-                dataGridView1.Columns[0].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[1].Width = 50;//Serie
-                dataGridView1.Columns[1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[2].Width = 50;//Folio
-                dataGridView1.Columns[2].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[3].Width = 75;//Fecha
-                dataGridView1.Columns[3].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[4].Width = 150;//Cliente
-                dataGridView1.Columns[4].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dataGridView1.Columns[5].Width = 75;//Monea
-                dataGridView1.Columns[5].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[6].Width = 75;//Total
-                dataGridView1.Columns[6].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridView1.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewComprobantes.Columns[0].Width = 50;//ID
+                dataGridViewComprobantes.Columns[0].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[0].Visible = false;
+                dataGridViewComprobantes.Columns[1].Width = 50;//Serie
+                dataGridViewComprobantes.Columns[1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[2].Width = 50;//Folio
+                dataGridViewComprobantes.Columns[2].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[3].Width = 75;//Fecha
+                dataGridViewComprobantes.Columns[3].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[4].Width = 200;//Cliente
+                dataGridViewComprobantes.Columns[4].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewComprobantes.Columns[5].Width = 75;//Monea
+                dataGridViewComprobantes.Columns[5].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[6].Width = 75;//Total
+                dataGridViewComprobantes.Columns[6].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewComprobantes.Columns[7].Visible = false;
             }
             catch (Exception ex)
             {
@@ -228,11 +228,11 @@ namespace ReimpresionComprobante
                             if(theText.Length > 0)
                             {
                                 List<DatosGridEntity> listaLocal = list.Where(s => s.Cliente.Contains(theText)).ToList();
-                                setGridSource(listaLocal);
+                                SetGridSource(listaLocal);
                             }
                             else
                             {
-                                setGridSource(list);
+                                SetGridSource(list);
                             }
                         }
                     }                                        
@@ -244,7 +244,74 @@ namespace ReimpresionComprobante
             }
         }
 
+        private void dataGridViewComprobantes_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            try
+            {
+                //int idCompro = (int)dataGridViewComprobantes.Rows[e.RowIndex].Cells["idHistRecColumn"].Value;
+                int idCompro = (int)dataGridViewComprobantes.Rows[e.RowIndex].Cells[0].Value;
+                //ReciboEntity recibo = listaRecibosTotal.FirstOrDefault(r => r.IDHistRec == idHist);
+                //idCliente = recibo.IDCliente;
+                //if (recibo != null)
+                //{
+                //    OnReciboSeleccionado(recibo, e.RowIndex);
+                //}
+            }
+            catch
+            {
 
+            }
+        }
 
+        private void dataGridViewComprobantes_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                //int idCompro = (int)dataGridViewComprobantes.Rows[e.RowIndex].Cells["idHistRecColumn"].Value;
+                
+                int idCompro = (int)dataGridViewComprobantes.SelectedRows[0].Cells["ID"].Value;
+                //ReciboEntity recibo = listaRecibosTotal.FirstOrDefault(r => r.IDHistRec == idHist);
+                //idCliente = recibo.IDCliente;
+                //if (recibo != null)
+                //{
+                //    OnReciboSeleccionado(recibo, e.RowIndex);
+                //}
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void buttonPDF_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                if (list != null)
+                {
+                    if (list.Count > 0)
+                    {
+                        int rowindex = dataGridViewComprobantes.CurrentCell.RowIndex;
+                        int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[0].Value.ToString());
+                        int idPago = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[7].Value.ToString());
+                        string elxml = reimpre.GetXmlComprobante(idCompro, idPago, inmobiliariaSeleccionada.ID);
+                        //var idCompro = (int)dataGridViewComprobantes.SelectedRows[0].Cells["ID"].Value;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error: " + Environment.NewLine + "No hay comprobantes en la lista, debe realizar una busqueda", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error: " + Environment.NewLine + "No hay comprobantes en la lista, debe realizar una busqueda", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + Environment.NewLine + ex.Message, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace ReimpresionComprobante.DataAccessLayer
         {
             this.cadenaDeConexion = cadenaDeConexion;
             this.usuario = usuario;
-            this.nombreUsuario = getNombreUsuario();
+            this.nombreUsuario = usuario;
         }
 
         private string getNombreUsuario()
@@ -34,7 +34,7 @@ namespace ReimpresionComprobante.DataAccessLayer
                 conexion.Close();
                 return result;
             }
-            catch (Exception ex)
+            catch 
             {
                 conexion.Close();                
                 return string.Empty;
@@ -66,11 +66,49 @@ namespace ReimpresionComprobante.DataAccessLayer
                 conexion.Close();
                 return listaInmobiliarias;
             }
-            catch (Exception ex)
+            catch 
             {
                 conexion.Close();               
                 return null;
             }
+        }
+
+        public InmobiliariaEntity GetInmobiliaria(string idArr)
+        {
+            var inmos = getInmobiliarias();
+            if (inmos != null)
+                return inmos.SingleOrDefault(i => i.ID == idArr);
+            else
+                return null;
+        }
+
+        public string GetIDContribuyente(string idInmobiliaria)
+        {
+            OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
+            string IDContribuyente = "";
+            try
+            {
+                string sql = @"SELECT T01_ARRENDADORA.P0122_CAMPO15
+                                FROM T01_ARRENDADORA
+                                WHERE T01_ARRENDADORA.P0101_ID_ARR = '" + idInmobiliaria + "'";
+                OdbcCommand comando = new OdbcCommand(sql, conexion);
+                conexion.Open();
+                OdbcDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader["P0122_CAMPO15"] != null)
+                    {
+                        IDContribuyente = reader["P0122_CAMPO15"].ToString();
+                    }
+                }
+                reader.Close();
+                conexion.Close();
+            }
+            catch
+            {
+                conexion.Close();         
+            }
+            return IDContribuyente;
         }
 
         public bool estaLimitado()
@@ -86,7 +124,7 @@ namespace ReimpresionComprobante.DataAccessLayer
                 conexion.Close();
                 return count > 0;
             }
-            catch (Exception ex)
+            catch 
             {
                 conexion.Close();                
                 return false;
@@ -107,7 +145,7 @@ namespace ReimpresionComprobante.DataAccessLayer
                 conexion.Close();
                 return count > 0;
             }
-            catch (Exception ex)
+            catch 
             {
                 conexion.Close();        
                 return false;
@@ -140,7 +178,7 @@ FROM GRUPOS WHERE USUARIO = ?";
                 conexion.Close();
                 return correo;
             }
-            catch (Exception ex)
+            catch
             {
                 conexion.Close();                
                 return null;
@@ -160,7 +198,7 @@ FROM GRUPOS WHERE USUARIO = ?";
                 conexion.Close();
                 return email;
             }
-            catch (Exception ex)
+            catch 
             {
                 conexion.Close();
                 return string.Empty;
@@ -180,7 +218,7 @@ FROM GRUPOS WHERE USUARIO = ?";
                 conexion.Close();
                 return fileName;
             }
-            catch (Exception ex)
+            catch
             {
                 conexion.Close();               
                 return string.Empty;

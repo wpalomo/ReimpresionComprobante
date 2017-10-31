@@ -1477,7 +1477,7 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
             }
         }
 
-        public List<DatosGridEntity> getDatosGrid(FiltrosEntity elFiltro)
+        public List<DatosGridEntity> GetDatosGrid(FiltrosEntity elFiltro)
         {
             List<int> listarecibos = inmoDAL.getRecibos(elFiltro.Inmobiliaria);
 
@@ -1528,7 +1528,8 @@ FROM
                                     FechaEmision = Convert.ToDateTime(row["FechaEmision"]),
                                     Cliente = inmoDAL.getDatosCliente(row["ID_Cliente"].ToString().Trim()),
                                     Moneda = row["Moneda"].ToString(),
-                                    Total = Convert.ToDecimal(row["Total"])
+                                    Total = Convert.ToDecimal(row["Total"]),
+                                    IDPago = Convert.ToInt32(row["IDPago"])
                                 };
 
                                 listaDatosGrid.Add(elDato);
@@ -1546,8 +1547,118 @@ FROM
             return listaDatosGrid;
         }
 
-        public string getCadenaOriginal(string UUID)
+        public int GetIdXmlComprobante(int ID_ComprobantePago)
         {
+            SqlConnection conexion = new SqlConnection(cadenaDeConexion);
+            string sql = @"SELECT [ID_XML]
+  FROM [BD_SaariCFD].[cfd].[ComprobantePago]
+  WHERE [ID_ComprobantePago] = @idcomprobante";
+            try
+            {
+                int elID = -1;
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                comando.Parameters.Add("@idcomprobante", SqlDbType.Int).Value = ID_ComprobantePago;
+                conexion.Open();
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    elID = (int)reader["ID_XML"];
+                }
+                reader.Close();
+                conexion.Close();
+                return elID;
+            }
+            catch
+            {
+                conexion.Close();
+                return -1;
+            }
+        }
+
+        public RutaContenidoXmlEntity GetrutaContenidoXml(int ID_XML)
+        {
+            RutaContenidoXmlEntity rutaContenidoXml = new RutaContenidoXmlEntity();
+            SqlConnection conexion = new SqlConnection(cadenaDeConexion);
+            string sql = @"SELECT [rutaXml],[XmlContenido]   
+  FROM [BD_SaariCFD].[cfd].[XMLComprobantePago]
+  WHERE [IDXMLComprobantePago] =  @idxml";
+            try
+            {
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                comando.Parameters.Add("@idxml", SqlDbType.Int).Value = ID_XML;
+                conexion.Open();
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {                    
+                    rutaContenidoXml.Ruta = reader["rutaXml"].ToString();
+                    rutaContenidoXml.XmlDocumento = reader["XmlContenido"].ToString();
+                }
+                reader.Close();
+                conexion.Close();
+                
+                return rutaContenidoXml;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public string GetIDContribuyente(string idArrendadora)
+        {
+            SqlConnection conexion = new SqlConnection(cadenaDeConexion);
+            string idContribuyente = "0";
+            try
+            {
+                string sql = @"SELECT ID_Contribuyente
+  FROM Empresa.Contribuyente
+  WHERE ID_Arrendadora = @idArrendadora";
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                comando.Parameters.Add("@idArrendadora", SqlDbType.NVarChar).Value = idArrendadora;
+                conexion.Open();
+                SqlDataReader reader = comando.ExecuteReader();
+                while (reader.Read())
+                {
+                    idContribuyente = reader["ID_Contribuyente"].ToString();
+                }
+                reader.Close();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                conexion.Close();                
+            }
+            return idContribuyente;
+        }
+
+        public string GetRutaDirectorio(int ID_Contribuyente)
+        {
+            SqlConnection conexion = new SqlConnection(cadenaDeConexion);
+            string laRutaDirectorio = "";
+            try
+            {
+                string sql = @"SELECT [RutaDirectorio] FROM [Empresa].[Contribuyente] WHERE ID_Contribuyente = @idcontribuyente";
+                SqlCommand comando = new SqlCommand(sql, conexion);
+                comando.Parameters.Add("@idcontribuyente", SqlDbType.Int).Value = ID_Contribuyente;
+                conexion.Open();
+                SqlDataReader reader = comando.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    laRutaDirectorio = reader["RutaDirectorio"].ToString();
+                }
+                reader.Close();
+                conexion.Close();
+            }
+            catch 
+            {
+                conexion.Close();                
+            }
+            return laRutaDirectorio;
+        }
+
+        public string getCadenaOriginal(string UUID)
+        {            
             SqlConnection conexion = new SqlConnection(cadenaDeConexion);
             string sql = @"
         SELECT  CadenaOriginal FROM cfd.CadenaOriginalComprobante
@@ -1648,12 +1759,13 @@ FROM
                 conexion.Close();
                 return cedula;
             }
-            catch (Exception ex)
+            catch
             {
                 conexion.Close();
                 return string.Empty;
             }
         }
+
         public static string getFormaPago(int idComprobante)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
@@ -1678,7 +1790,7 @@ FROM
                 FormaPago = forma + " - " + descripcion;
                 return FormaPago;
             }
-            catch (Exception ex)
+            catch
             {
                 conexion.Close();
                 return string.Empty;
