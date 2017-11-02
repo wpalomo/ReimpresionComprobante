@@ -35,7 +35,7 @@ namespace ReimpresionComprobante.BusinessLayer
         {
             try
             {
-                List<InmobiliariaEntity> listaInmobiliarias = inmoDAL.getInmobiliarias();
+                List<InmobiliariaEntity> listaInmobiliarias = inmoDAL.GetInmobiliarias();
                 return listaInmobiliarias;
             }
             catch
@@ -99,7 +99,34 @@ namespace ReimpresionComprobante.BusinessLayer
 
                 if (File.Exists(laRuta))
                 {
-                    System.Diagnostics.Process.Start(laRuta);                    
+                    
+                    if(Configuraciones.EnviarImprimir == false)
+                    {
+                        System.Diagnostics.Process.Start(laRuta);
+                    }
+                    else
+                    {
+                        var idcontribuyente = inmoDAL.GetIDContribuyente(inmobiliaria);
+                        var idcontribuyentesql = cobranzaDAL.GetIDContribuyente(idcontribuyente);
+                        int ContribuyenteID = Convert.ToInt32(idcontribuyentesql);
+
+                        var serializer = new XmlSerializer(typeof(Comprobante));
+                        Comprobante cfdiv33;
+
+                        using (TextReader reader = new StringReader(rutaContenidoXml.XmlDocumento.ToString()))
+                        {
+                            cfdiv33 = (Comprobante)serializer.Deserialize(reader);
+                        }
+
+                        ComprobantePDF comporbantePdf = new ComprobantePDF();
+                        bool imprimir = true;
+                        bool abrir = true;
+                        string result = comporbantePdf.GenerarComprobante(cfdiv33, ContribuyenteID, rutaContenidoXml.Ruta, false, ID_ComprobantePago, imprimir, abrir);
+                        if (!string.IsNullOrEmpty(result))
+                        {
+                            return result;
+                        }
+                    }
                 }
                 else
                 {
@@ -116,7 +143,9 @@ namespace ReimpresionComprobante.BusinessLayer
                     }
 
                     ComprobantePDF comporbantePdf = new ComprobantePDF();
-                    string result = comporbantePdf.GenerarComprobante(cfdiv33, ContribuyenteID, rutaContenidoXml.Ruta, false, ID_ComprobantePago, false, true);
+                    bool imprimir = false;
+                    bool abrir = true;
+                    string result = comporbantePdf.GenerarComprobante(cfdiv33, ContribuyenteID, rutaContenidoXml.Ruta, false, ID_ComprobantePago, imprimir, abrir);
                     if (!string.IsNullOrEmpty(result))
                     {
                         return result;
@@ -184,7 +213,7 @@ namespace ReimpresionComprobante.BusinessLayer
                     }
 
                     ComprobantePDF comporbantePdf = new ComprobantePDF();
-                    string result = comporbantePdf.GenerarComprobante(cfdiv33, ContribuyenteID, rutaContenidoXml.Ruta, false, ID_ComprobantePago, false, false);
+                    string result = comporbantePdf.GenerarComprobante(cfdiv33, ContribuyenteID, rutaContenidoXml.Ruta, false, ID_ComprobantePago, Configuraciones.EnviarImprimir, false);
                     if (!string.IsNullOrEmpty(result))
                     {
                         return result;

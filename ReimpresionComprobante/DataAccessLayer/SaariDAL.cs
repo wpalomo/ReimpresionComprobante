@@ -21,7 +21,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             this.nombreUsuario = usuario;
         }
 
-        private string getNombreUsuario()
+        private string GetNombreUsuario()
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -41,7 +41,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             }
         }
 
-        public List<InmobiliariaEntity> getInmobiliarias()
+        public List<InmobiliariaEntity> GetInmobiliarias()
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -49,7 +49,7 @@ namespace ReimpresionComprobante.DataAccessLayer
                 string sql = "SELECT P0101_ID_ARR, P0102_N_COMERCIAL, P0103_RAZON_SOCIAL, P0106_RFC FROM T01_ARRENDADORA ORDER BY P0103_RAZON_SOCIAL";
                 OdbcCommand comando = new OdbcCommand(sql, conexion);
                 List<InmobiliariaEntity> listaInmobiliarias = new List<InmobiliariaEntity>();
-                bool estaLimitado = this.estaLimitado();
+                bool estaLimitado = this.EstaLimitado();
                 conexion.Open();
                 OdbcDataReader reader = comando.ExecuteReader();
                 while (reader.Read())
@@ -59,7 +59,7 @@ namespace ReimpresionComprobante.DataAccessLayer
                     inmo.NombreComercial = reader["P0102_N_COMERCIAL"].ToString();
                     inmo.RazonSocial = reader["P0103_RAZON_SOCIAL"].ToString();
                     inmo.RFC = reader["P0106_RFC"].ToString();
-                    if (!estaLimitado || tienePermisoInmobiliaria(inmo.ID))
+                    if (!estaLimitado || TienePermisoInmobiliaria(inmo.ID))
                         listaInmobiliarias.Add(inmo);
                 }
                 reader.Close();
@@ -75,7 +75,7 @@ namespace ReimpresionComprobante.DataAccessLayer
 
         public InmobiliariaEntity GetInmobiliaria(string idArr)
         {
-            var inmos = getInmobiliarias();
+            var inmos = GetInmobiliarias();
             if (inmos != null)
                 return inmos.SingleOrDefault(i => i.ID == idArr);
             else
@@ -111,7 +111,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             return IDContribuyente;
         }
 
-        public bool estaLimitado()
+        public bool EstaLimitado()
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -131,7 +131,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             }
         }
 
-        public bool tienePermisoInmobiliaria(string idInmobiliaria)
+        public bool TienePermisoInmobiliaria(string idInmobiliaria)
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -185,7 +185,7 @@ FROM GRUPOS WHERE USUARIO = ?";
             }
         }
 
-        public string getCorreoCliente(string idCliente)
+        public string GetCorreoCliente(string idCliente)
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -198,14 +198,14 @@ FROM GRUPOS WHERE USUARIO = ?";
                 conexion.Close();
                 return email;
             }
-            catch 
+            catch (Exception e)
             {
                 conexion.Close();
                 return string.Empty;
             }
         }
 
-        public string getXMLFilename(int idHistRec)
+        public string GetXMLFilename(int idHistRec)
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try
@@ -225,7 +225,7 @@ FROM GRUPOS WHERE USUARIO = ?";
             }
         }
 
-        public List<int> getRecibos(string arrendadora)
+        public List<int> GetRecibos(string arrendadora)
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             List<int> listareciboa = new List<int>();
@@ -270,7 +270,7 @@ Where P2406_STATUS = 2 And P2401_ID_ARRENDADORA = '" + arrendadora + "' And CAMP
             }
         }
 
-        public string getDatosCliente(string ID_Cliente)
+        public string GetDatosCliente(string ID_Cliente)
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             string result = "";

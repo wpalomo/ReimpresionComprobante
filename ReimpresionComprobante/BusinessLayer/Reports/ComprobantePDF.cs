@@ -91,7 +91,7 @@ namespace ReimpresionComprobante.BusinessLayer.Reports
                 dtDatos.AcceptChanges();
 
                 ComprobantePagoEntity comprobantePago = new ComprobantePagoEntity();
-                comprobantePago = CobranzaDAL.getDatosComprobante(idComprobante);
+                comprobantePago = CobranzaDAL.GetDatosComprobante(idComprobante);
                 if (comprobantePago.TipoCambio <= 0)
                     comprobantePago.TipoCambio = 1;
 
@@ -115,11 +115,11 @@ namespace ReimpresionComprobante.BusinessLayer.Reports
                 }
                 catch { }
 
-                string RegimenFiscal = CobranzaDAL.getRegimenFiscal(ComprobanteV33.Emisor.RegimenFiscal);
+                string RegimenFiscal = CobranzaDAL.GetRegimenFiscal(ComprobanteV33.Emisor.RegimenFiscal);
                 if (!string.IsNullOrEmpty(RegimenFiscal))
                     ComprobanteV33.Emisor.RegimenFiscal = ComprobanteV33.Emisor.RegimenFiscal + " - " + RegimenFiscal;
 
-                string formaPago = CobranzaDAL.getFormaPago(idComprobante);
+                string formaPago = CobranzaDAL.GetFormaPago(idComprobante);
                 if (!string.IsNullOrEmpty(formaPago))
                     ComprobanteV33.FormaPago = formaPago;
 
@@ -234,7 +234,7 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
                     {
                         //if (rfcEmpresa != string.Empty)
                         //{
-                        string rutaLogo = CobranzaDAL.getRutaLogoContribuyente(IDContribuyente);//csEmpresa.getEmpresaByRFC(rfcEmpresa);
+                        string rutaLogo = CobranzaDAL.GetRutaLogoContribuyente(IDContribuyente);//csEmpresa.getEmpresaByRFC(rfcEmpresa);
                         if (rutaLogo != null)
                         {
                             if (csDirectorio.existFile(rutaLogo) == true)
@@ -253,7 +253,7 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
                     {
                         //if (rfcEmpresa != string.Empty)
                         //{
-                        string rutaLogo = CobranzaDAL.getRutaCedulaContribuyente(IDContribuyente);//csEmpresa.getEmpresaByRFC(rfcEmpresa);
+                        string rutaLogo = CobranzaDAL.GetRutaCedulaContribuyente(IDContribuyente);//csEmpresa.getEmpresaByRFC(rfcEmpresa);
                         if (rutaLogo != null)
                         {
                             if (csDirectorio.existFile(rutaLogo) == true)
@@ -353,7 +353,7 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
                 }
                 try
                 {
-                    cadenaO = CobranzaDAL.getCadenaOriginal(UUID);// Hace falta cambiar este dato y asignar la cadena real
+                    cadenaO = CobranzaDAL.GetCadenaOriginal(UUID);// Hace falta cambiar este dato y asignar la cadena real
                 }
                 catch
                 {
@@ -431,7 +431,7 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
                     reporte.Export(export, filename);
                 }
                 nombreArchivo = filename;
-                if (Configuraciones.enviarImprimir)
+                if (Configuraciones.EnviarImprimir)
                 {
                     impresionDirecta(reporte);
                 }                    
@@ -487,8 +487,8 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
             {
                 ReporteCFDIV33.Prepare();
                 ReporteCFDIV33.PrintSettings.ShowDialog = false;
-                ReporteCFDIV33.PrintSettings.Copies = Configuraciones.copies; ;
-                ReporteCFDIV33.PrintSettings.Printer = Configuraciones.printName;
+                ReporteCFDIV33.PrintSettings.Copies = Configuraciones.Copies; ;
+                ReporteCFDIV33.PrintSettings.Printer = Configuraciones.PrintName;
                 ReporteCFDIV33.Print();
                 ReporteCFDIV33.Dispose();
             }

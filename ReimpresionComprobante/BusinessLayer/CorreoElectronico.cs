@@ -38,10 +38,10 @@ namespace ReimpresionComprobante.BusinessLayer
                 {
                     if (!string.IsNullOrEmpty(correo.Correo) && !string.IsNullOrEmpty(correo.Servidor) && !string.IsNullOrEmpty(correo.Contrasenia) && correo.Puerto > 0)
                     {
-                        string emailCliente = saariDal.getCorreoCliente(recibo.IDCliente);
+                        string emailCliente = saariDal.GetCorreoCliente(recibo.IDCliente);
                         if (!string.IsNullOrEmpty(emailCliente))
                         {
-                            string fileXml = saariDal.getXMLFilename(recibo.IDHistRec);
+                            string fileXml = saariDal.GetXMLFilename(recibo.IDHistRec);
                             if (!string.IsNullOrEmpty(fileXml))
                             {
                                 string filePdf = fileXml.Replace(".xml", ".pdf");
@@ -105,7 +105,7 @@ namespace ReimpresionComprobante.BusinessLayer
                 {
                     if (!string.IsNullOrEmpty(correo.Correo) && !string.IsNullOrEmpty(correo.Servidor) && !string.IsNullOrEmpty(correo.Contrasenia) && correo.Puerto > 0)
                     {
-                        string emailCliente = saariDal.getCorreoCliente(idCliente);
+                        string emailCliente = saariDal.GetCorreoCliente(idCliente);
                         if (!string.IsNullOrEmpty(emailCliente))
                         {
                             bool esPDF = nombreComprobante.Contains(".pdf");

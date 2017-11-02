@@ -669,7 +669,7 @@ namespace ReimpresionComprobante.DataAccessLayer
         //            return elComprobante;
         //        }
 
-        public ComprobantePagoEntity getDatosComprobante(int ID_comrpobante)
+        public ComprobantePagoEntity GetDatosComprobante(int ID_comrpobante)
         {
             SqlConnection conexion = new SqlConnection(cadenaDeConexion);
             ComprobantePagoEntity elComprobante = new ComprobantePagoEntity();
@@ -1479,7 +1479,7 @@ where cfd.ComprobantePago.ID_ComprobantePago  = @idcomrobante";
 
         public List<DatosGridEntity> GetDatosGrid(FiltrosEntity elFiltro)
         {
-            List<int> listarecibos = inmoDAL.getRecibos(elFiltro.Inmobiliaria);
+            List<int> listarecibos = inmoDAL.GetRecibos(elFiltro.Inmobiliaria);
 
             List<DatosGridEntity> listaDatosGrid = new List<DatosGridEntity>();
 
@@ -1527,7 +1527,7 @@ FROM
                                     Folio = Convert.ToInt32(row["Folio"]),
                                     FechaEmision = Convert.ToDateTime(row["FechaEmision"]),
                                     ID_Cliente = row["ID_Cliente"].ToString().Trim(),
-                                    Cliente = inmoDAL.getDatosCliente(row["ID_Cliente"].ToString().Trim()),
+                                    Cliente = inmoDAL.GetDatosCliente(row["ID_Cliente"].ToString().Trim()),
                                     Moneda = row["Moneda"].ToString(),
                                     Total = Convert.ToDecimal(row["Total"]),
                                     IDPago = Convert.ToInt32(row["IDPago"])
@@ -1659,7 +1659,7 @@ FROM
             return laRutaDirectorio;
         }
 
-        public string getCadenaOriginal(string UUID)
+        public string GetCadenaOriginal(string UUID)
         {            
             SqlConnection conexion = new SqlConnection(cadenaDeConexion);
             string sql = @"
@@ -1684,7 +1684,7 @@ FROM
             }
         }
 
-        public static string getRutaLogoContribuyente(int IDContribuyente)
+        public static string GetRutaLogoContribuyente(int IDContribuyente)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
             string sql = @"SELECT Logo FROM Empresa.Contribuyente WHERE ID_Contribuyente = @IDContribuyente";
@@ -1705,7 +1705,7 @@ FROM
             }
         }
 
-        public static string getRutaCedulaContribuyente(int IDContribuyente)
+        public static string GetRutaCedulaContribuyente(int IDContribuyente)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
             string sql = @"SELECT CedulaFiscal FROM Empresa.Contribuyente WHERE ID_Contribuyente = @IDContribuyente";
@@ -1726,7 +1726,7 @@ FROM
             }
         }
 
-        public static string getRegimenFiscal(string claveRegimen)
+        public static string GetRegimenFiscal(string claveRegimen)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
             string sql = @"SELECT Descripcion FROM SAT.RegimenFiscal Where ClaveRegimenFiscal = @claveRegimen";
@@ -1747,7 +1747,7 @@ FROM
             }
         }
 
-        public static string getFormaPago(string formaPago)
+        public static string GetFormaPago(string formaPago)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
             string sql = @" SELECT Descripcion FROM SAT.FormaDePago Where ClaveFormaDePago = @FormaPago";
@@ -1768,7 +1768,7 @@ FROM
             }
         }
 
-        public static string getFormaPago(int idComprobante)
+        public static string GetFormaPago(int idComprobante)
         {
             SqlConnection conexion = new SqlConnection(Configuraciones.CadenaConexionSQLServer);
             string sql = @"SELECT FormaPago,SAT.FormaDePago.Descripcion AS descripcion FROM cfd.ComprobantePago  

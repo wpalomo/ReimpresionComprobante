@@ -57,8 +57,8 @@ namespace ReimpresionComprobante.BusinessLayer
         /// </summary>
         public static int DiasCalculoAnual { get; set; }
 
-        public static string printName { get; set; }
-        public static int copies { get; set; }
-        public static bool enviarImprimir { get; set; }
+        public static string PrintName { get; set; }
+        public static int Copies { get; set; }
+        public static bool EnviarImprimir { get; set; }
     }
 }

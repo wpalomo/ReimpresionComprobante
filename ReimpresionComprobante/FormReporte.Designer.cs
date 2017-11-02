@@ -47,8 +47,8 @@
             this.textBoxSerieAl = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.textBoxCliente = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBoxImpresora = new System.Windows.Forms.CheckBox();
+            this.checkBoxCorreo = new System.Windows.Forms.CheckBox();
             this.buttonBuscar = new System.Windows.Forms.Button();
             this.buttonPDF = new System.Windows.Forms.Button();
             this.buttonCorreo = new System.Windows.Forms.Button();
@@ -210,25 +210,26 @@
             this.textBoxCliente.TabIndex = 26;
             this.textBoxCliente.TextChanged += new System.EventHandler(this.textBoxCliente_TextChanged);
             // 
-            // checkBox1
+            // checkBoxImpresora
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 406);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(113, 17);
-            this.checkBox1.TabIndex = 28;
-            this.checkBox1.Text = "Enviar a impresora";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxImpresora.AutoSize = true;
+            this.checkBoxImpresora.Location = new System.Drawing.Point(15, 406);
+            this.checkBoxImpresora.Name = "checkBoxImpresora";
+            this.checkBoxImpresora.Size = new System.Drawing.Size(113, 17);
+            this.checkBoxImpresora.TabIndex = 28;
+            this.checkBoxImpresora.Text = "Enviar a impresora";
+            this.checkBoxImpresora.UseVisualStyleBackColor = true;
+            this.checkBoxImpresora.CheckedChanged += new System.EventHandler(this.checkBoxImpresora_CheckedChanged);
             // 
-            // checkBox2
+            // checkBoxCorreo
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(157, 406);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(107, 17);
-            this.checkBox2.TabIndex = 29;
-            this.checkBox2.Text = "Enviar por correo";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBoxCorreo.AutoSize = true;
+            this.checkBoxCorreo.Location = new System.Drawing.Point(157, 406);
+            this.checkBoxCorreo.Name = "checkBoxCorreo";
+            this.checkBoxCorreo.Size = new System.Drawing.Size(107, 17);
+            this.checkBoxCorreo.TabIndex = 29;
+            this.checkBoxCorreo.Text = "Enviar por correo";
+            this.checkBoxCorreo.UseVisualStyleBackColor = true;
             // 
             // buttonBuscar
             // 
@@ -319,8 +320,8 @@
             this.Controls.Add(this.buttonCorreo);
             this.Controls.Add(this.buttonPDF);
             this.Controls.Add(this.buttonBuscar);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.checkBoxCorreo);
+            this.Controls.Add(this.checkBoxImpresora);
             this.Controls.Add(this.textBoxCliente);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.textBoxSerieAl);
@@ -376,8 +377,8 @@
         private System.Windows.Forms.TextBox textBoxSerieAl;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox textBoxCliente;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBoxImpresora;
+        private System.Windows.Forms.CheckBox checkBoxCorreo;
         private System.Windows.Forms.Button buttonBuscar;
         private System.Windows.Forms.Button buttonPDF;
         private System.Windows.Forms.Button buttonCorreo;
