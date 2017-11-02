@@ -22,7 +22,7 @@ namespace ReimpresionComprobante.BusinessLayer
         public CorreoElectronico()
         {
             saariDal = new SaariDAL(Properties.Settings.Default.ConnectionStringODBC, "Administrador", Properties.Settings.Default.ConnectionStringCFD);
-            correo = saariDal.getConfiguracion();
+            correo = saariDal.GetConfiguracion();
         }
 
         /// <summary>

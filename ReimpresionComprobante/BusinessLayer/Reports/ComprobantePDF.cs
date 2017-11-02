@@ -39,7 +39,7 @@ namespace ReimpresionComprobante.BusinessLayer.Reports
             }
         }
 
-        public string GenerarComprobante(Comprobante ComprobanteV33, int IDContribuyente, string rutaFile, bool Esretimbrado, int idComprobante, bool imprimir)
+        public string GenerarComprobante(Comprobante ComprobanteV33, int IDContribuyente, string rutaFile, bool Esretimbrado, int idComprobante, bool imprimir, bool abrir)
         {
             esRetimbrado = Esretimbrado;
             string MessageError = string.Empty;
@@ -394,7 +394,7 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
                 {
                     string pathXml = rutaFile;// CobranzaDAL.getRutaDirectorio(IDContribuyente) + @"\CRP\";
                     nombreArchivo = ComprobanteV33.Emisor.Nombre + "_" + ComprobanteV33.Serie + "_" + ComprobanteV33.Folio + ".pdf";
-                    MessageError = exportar(report, true, pathXml, nombreArchivo);
+                    MessageError = Exportar(report, true, pathXml, nombreArchivo, abrir);
                     return MessageError;
                 }
                 catch
@@ -407,49 +407,46 @@ ComprobanteV33.LugarExpedicion, ComprobanteV33.MetodoPago, cantidadLetra, Compro
             }
         }
 
-        private string exportar(Report reporte, bool esPdf, string PathSave, string nombreArchivo)
+        private string Exportar(Report reporte, bool esPdf, string PathSave, string nombreArchivo, bool abrir)
         {
             try
             {
 
-                string rutaGuardar = Path.GetDirectoryName(PathSave);// Properties.Settings.Default.RutaRepositorio;
-                                              // rutaGuardar = rutaGuardar.EndsWith(@"\") ? rutaGuardar + nombreReporte + @"\" : rutaGuardar + @"\" + nombreReporte + @"\";
-
-                //if (!Directory.Exists(rutaGuardar))
-                //    Directory.CreateDirectory(rutaGuardar);
-
-                //string pathXml = Path.GetDirectoryName(rutaContenidoXml.Ruta);
-
+                string rutaGuardar = Path.GetDirectoryName(PathSave) + @"\";
                 Directory.CreateDirectory(rutaGuardar);
-
 
                 reporte.Prepare();
                 string filename = string.Empty;
                 if (esPdf)
                 {
-                    filename = rutaGuardar + nombreArchivo;// "ComprobantePago_"+nombreReporte + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".pdf";
+                    filename = rutaGuardar + nombreArchivo;
                     PDFExport export = new PDFExport();
                     reporte.Export(export, filename);
                 }
                 else
                 {
 
-                    filename = rutaGuardar + nombreArchivo; //nombreReporte + "_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".xlsx";
+                    filename = rutaGuardar + nombreArchivo; 
                     Excel2007Export export = new Excel2007Export();
                     reporte.Export(export, filename);
                 }
                 nombreArchivo = filename;
                 if (Configuraciones.enviarImprimir)
+                {
                     impresionDirecta(reporte);
+                }                    
                 reporte.Dispose();
 
-                if (File.Exists(filename))
+                if(abrir)
                 {
-                    Process.Start(filename);
-                    //SendMail mail = new SendMail();
-                    //mail.enviarMail("CTE3","Administrador",filename);
+                    if (File.Exists(filename))
+                    {
+                        Process.Start(filename);
+                        //SendMail mail = new SendMail();
+                        //mail.enviarMail("CTE3","Administrador",filename);
+                    }
                 }
-                //OnCambioProgreso(100);
+
                 return string.Empty;
             }
             catch (Exception ex)

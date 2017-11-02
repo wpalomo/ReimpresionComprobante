@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -129,6 +130,7 @@ namespace ReimpresionComprobante
                 elFiltro.Cliente = textBoxCliente.Text;
                 
                 list = reimpre.GetDatosGrid(elFiltro);
+
                 SetGridSource(list);
             }
             catch (Exception ex)
@@ -155,7 +157,7 @@ namespace ReimpresionComprobante
                 dataGridViewComprobantes.Columns[0].Width = 50;//ID
                 dataGridViewComprobantes.Columns[0].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[0].Visible = false;
+                //dataGridViewComprobantes.Columns[0].Visible = false;
                 dataGridViewComprobantes.Columns[1].Width = 50;//Serie
                 dataGridViewComprobantes.Columns[1].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns[1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -165,16 +167,17 @@ namespace ReimpresionComprobante
                 dataGridViewComprobantes.Columns[3].Width = 75;//Fecha
                 dataGridViewComprobantes.Columns[3].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[4].Width = 200;//Cliente
-                dataGridViewComprobantes.Columns[4].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dataGridViewComprobantes.Columns[5].Width = 75;//Monea
+                dataGridViewComprobantes.Columns[4].Visible = false;//ID_Cliente
+                dataGridViewComprobantes.Columns[5].Width = 150;//Cliente
                 dataGridViewComprobantes.Columns[5].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[6].Width = 75;//Total
+                dataGridViewComprobantes.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dataGridViewComprobantes.Columns[6].Width = 75;//Monea
                 dataGridViewComprobantes.Columns[6].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dataGridViewComprobantes.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dataGridViewComprobantes.Columns[7].Visible = false;
+                dataGridViewComprobantes.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[7].Width = 75;//Total
+                dataGridViewComprobantes.Columns[7].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewComprobantes.Columns[7].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewComprobantes.Columns[8].Visible = false;
             }
             catch (Exception ex)
             {
@@ -294,9 +297,81 @@ namespace ReimpresionComprobante
                     {
                         int rowindex = dataGridViewComprobantes.CurrentCell.RowIndex;
                         int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[0].Value.ToString());
-                        int idPago = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[7].Value.ToString());
-                        string elxml = reimpre.GetXmlComprobante(idCompro, idPago, inmobiliariaSeleccionada.ID);
-                        //var idCompro = (int)dataGridViewComprobantes.SelectedRows[0].Cells["ID"].Value;
+                        //int idPago = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[7].Value.ToString());
+                        string elxml = reimpre.GetXmlComprobante(idCompro, inmobiliariaSeleccionada.ID);
+                        if (!string.IsNullOrEmpty(elxml))
+                        {
+                            MessageBox.Show("Error: " + Environment.NewLine + elxml, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }                        
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error: " + Environment.NewLine + "No hay comprobantes en la lista, debe realizar una busqueda", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error: " + Environment.NewLine + "No hay comprobantes en la lista, debe realizar una busqueda", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + Environment.NewLine + ex.Message, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void buttonCorreo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (list != null)
+                {
+                    if (list.Count > 0)
+                    {
+                        
+                        int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[0].Value.ToString());
+                        
+                        string idcliente = dataGridViewComprobantes.CurrentRow.Cells[4].Value.ToString();
+                        string elcorreo = reimpre.EnviarCorreo(idCompro, inmobiliariaSeleccionada.ID, idcliente);
+                        if (string.IsNullOrEmpty(elcorreo))
+                        {
+                            MessageBox.Show("Exito: " + Environment.NewLine + "Su correo fue enviado de forma exitosa", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            //log
+                            string serie = dataGridViewComprobantes.CurrentRow.Cells[1].Value.ToString();
+                            string folio = dataGridViewComprobantes.CurrentRow.Cells[2].Value.ToString();
+                            string cliente = dataGridViewComprobantes.CurrentRow.Cells[5].Value.ToString();
+                            int idcompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells[0].Value.ToString());
+
+                            string fecha = DateTime.Now.ToString("ddMMyyyy");
+                            string directorio = reimpre.GetRutaLog(idcompro);
+
+                            Directory.CreateDirectory(directorio);                            
+                            string nombreLog = "ErrorEnvioComprobantePago_" + serie.Trim() + "_" + folio.Trim() + "_" + cliente.Trim() + "_" + fecha + ".txt";
+                            var LogPath = directorio + @"\" + nombreLog;
+                            string logmessage = elcorreo + " " + " en fecha: " + DateTime.Now.ToString();
+
+                            if (!File.Exists(LogPath))
+                            {
+                                File.Create(LogPath).Dispose();
+                                using (StreamWriter tw = new StreamWriter(LogPath))
+                                {
+                                    tw.WriteLine(logmessage);
+                                    tw.Close();
+                                }
+                            }
+                            else if (File.Exists(LogPath))
+                            {
+                                using (StreamWriter tw = new StreamWriter(LogPath, true))
+                                {
+                                    tw.WriteLine(logmessage);
+                                    tw.Close();
+                                }
+                            }
+                            MessageBox.Show("Error: " + Environment.NewLine + "No se pudo enviar el correo, consulte el Log en:" + Environment.NewLine + LogPath, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                     else
                     {

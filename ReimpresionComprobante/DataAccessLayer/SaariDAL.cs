@@ -152,7 +152,7 @@ namespace ReimpresionComprobante.DataAccessLayer
             }
         }
 
-        public CorreoEntity getConfiguracion()
+        public CorreoEntity GetConfiguracion()
         {
             OdbcConnection conexion = new OdbcConnection(cadenaDeConexion);
             try

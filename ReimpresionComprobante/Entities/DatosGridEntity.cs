@@ -12,6 +12,7 @@ namespace ReimpresionComprobante.Entities
         public string Serie { get; set; }
         public int Folio { get; set; }
         public DateTime FechaEmision { get; set; }
+        public string ID_Cliente { get; set; }
         public string Cliente { get; set; }
         public string Moneda { get; set; }
         public decimal Total { get; set; }

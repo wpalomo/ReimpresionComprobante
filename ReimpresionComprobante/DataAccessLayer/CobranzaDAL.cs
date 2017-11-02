@@ -1526,6 +1526,7 @@ FROM
                                     Serie = row["Serie"].ToString(),
                                     Folio = Convert.ToInt32(row["Folio"]),
                                     FechaEmision = Convert.ToDateTime(row["FechaEmision"]),
+                                    ID_Cliente = row["ID_Cliente"].ToString().Trim(),
                                     Cliente = inmoDAL.getDatosCliente(row["ID_Cliente"].ToString().Trim()),
                                     Moneda = row["Moneda"].ToString(),
                                     Total = Convert.ToDecimal(row["Total"]),
@@ -1536,9 +1537,10 @@ FROM
                             }
 
                         }
+                        listaDatosGrid = listaDatosGrid.OrderBy(o => o.Cliente).ToList();
                     }
                 }
-                catch
+                catch(Exception e)
                 {
                     listaDatosGrid = new List<DatosGridEntity>();
                 }

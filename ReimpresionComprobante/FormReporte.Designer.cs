@@ -261,6 +261,7 @@
             this.buttonCorreo.Size = new System.Drawing.Size(75, 70);
             this.buttonCorreo.TabIndex = 32;
             this.buttonCorreo.UseVisualStyleBackColor = true;
+            this.buttonCorreo.Click += new System.EventHandler(this.buttonCorreo_Click);
             // 
             // buttonCancelar
             // 
