@@ -1,7 +1,6 @@
 ﻿using ReimpresionComprobante.DataAccessLayer;
 using ReimpresionComprobante.Entities;
 using System;
-using System.Linq;
 using System.IO;
 using System.Net;
 using System.Net.Mail;

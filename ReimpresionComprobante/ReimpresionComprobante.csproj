@@ -54,7 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLayer\Acceso.cs" />
-    <Compile Include="BusinessLayer\ComprobantesDePagoEmitidos.cs" />
     <Compile Include="BusinessLayer\Configuraciones.cs" />
     <Compile Include="BusinessLayer\CorreoElectronico.cs" />
     <Compile Include="BusinessLayer\Directorio.cs" />
@@ -65,7 +64,6 @@
     <Compile Include="BusinessLayer\XMLManager.cs" />
     <Compile Include="DataAccessLayer\CobranzaDAL.cs" />
     <Compile Include="DataAccessLayer\Comprobante.cs" />
-    <Compile Include="DataAccessLayer\ComprobantePagoDAL.cs" />
     <Compile Include="DataAccessLayer\SaariDAL.cs" />
     <Compile Include="Entities\ComprobantePagoEntity.cs" />
     <Compile Include="Entities\ComprobanteReceptorEntity.cs" />
@@ -82,28 +80,10 @@
     <Compile Include="FormReporte.Designer.cs">
       <DependentUpon>FormReporte.cs</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLayer\Controls\Ctrl_BotonAceptar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PresentationLayer\Controls\Ctrl_BotonAceptar.designer.cs">
-      <DependentUpon>Ctrl_BotonAceptar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PresentationLayer\Controls\Ctrl_BotonCancelar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="PresentationLayer\Controls\Ctrl_BotonCancelar.designer.cs">
-      <DependentUpon>Ctrl_BotonCancelar.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormReporte.resx">
       <DependentUpon>FormReporte.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PresentationLayer\Controls\Ctrl_BotonAceptar.resx">
-      <DependentUpon>Ctrl_BotonAceptar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PresentationLayer\Controls\Ctrl_BotonCancelar.resx">
-      <DependentUpon>Ctrl_BotonCancelar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -128,7 +108,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="PresentationLayer\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Images\buscar.png" />
     <Content Include="Images\cancelar.png" />

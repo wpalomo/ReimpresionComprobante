@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReimpresionComprobante.Entities
+﻿namespace ReimpresionComprobante.Entities
 {
     public class InmobiliariaEntity
     {

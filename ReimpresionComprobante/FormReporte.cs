@@ -1,16 +1,12 @@
 ﻿using ReimpresionComprobante.BusinessLayer;
-using ReimpresionComprobante.DataAccessLayer;
 using ReimpresionComprobante.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReimpresionComprobante
@@ -85,6 +81,35 @@ namespace ReimpresionComprobante
                 comboBoxInmobiliaria.DataSource = reimpre.GetInmobiliarias();
                 comboBoxInmobiliaria.ValueMember = "ID";
                 comboBoxInmobiliaria.DisplayMember = "NombreComercial";
+
+                FiltrosEntity elFiltro = new FiltrosEntity();
+                var lainmo = inmobiliariaSeleccionada.ID;
+                var nominmo = inmobiliariaSeleccionada.RazonSocial;
+
+                elFiltro.Inmobiliaria = lainmo.ToString();
+                elFiltro.NombreInmobiliaria = nominmo;
+                elFiltro.FechaDel = dateInicio.Value.Date;
+                elFiltro.FechaAl = dateFin.Value.Date;
+                elFiltro.Serie = textBoxSerie.Text;
+                if (textBoxSerieDel.Text.Length > 0)
+                {
+                    if (IsNumeric(textBoxSerieDel.Text))
+                    {
+                        elFiltro.SerieDel = Convert.ToInt32(textBoxSerieDel.Text);
+                    }
+                }
+                if (textBoxSerieAl.Text.Length > 0)
+                {
+                    if (IsNumeric(textBoxSerieAl.Text))
+                    {
+                        elFiltro.SerieAl = Convert.ToInt32(textBoxSerieAl.Text);
+                    }
+                }
+                elFiltro.Cliente = textBoxCliente.Text;
+                
+                list = reimpre.GetDatosGrid(elFiltro);
+                
+                SetGridSource(list);
             }
             catch (Exception ex)
             {
@@ -104,6 +129,7 @@ namespace ReimpresionComprobante
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
+                progressBar1.Value = 10;
                 elFiltro = new FiltrosEntity();
                 textBoxCliente.Clear();
 
@@ -115,7 +141,8 @@ namespace ReimpresionComprobante
                 elFiltro.FechaDel = dateInicio.Value.Date;
                 elFiltro.FechaAl = dateFin.Value.Date;
                 elFiltro.Serie = textBoxSerie.Text;
-                if(textBoxSerieDel.Text.Length > 0)
+                progressBar1.Value = 20;
+                if (textBoxSerieDel.Text.Length > 0)
                 {
                     if(IsNumeric(textBoxSerieDel.Text))
                     {
@@ -130,10 +157,12 @@ namespace ReimpresionComprobante
                     }
                 }
                 elFiltro.Cliente = textBoxCliente.Text;
-                
+                progressBar1.Value = 50;
                 list = reimpre.GetDatosGrid(elFiltro);
+                progressBar1.Value = 70;
 
                 SetGridSource(list);
+                progressBar1.Value = 100;
             }
             catch (Exception ex)
             {
@@ -142,8 +171,10 @@ namespace ReimpresionComprobante
             finally
             {
                 Cursor.Current = cursorActual;
+                System.Threading.Tasks.Task.Delay(5000);
+                progressBar1.Value = 0;
             }
-            //bgWorkerReporte.RunWorkerAsync();
+            
         }
 
         private void SetGridSource(List<DatosGridEntity> laLista)
@@ -159,7 +190,7 @@ namespace ReimpresionComprobante
                 dataGridViewComprobantes.Columns["ID"].Width = 50;//ID
                 dataGridViewComprobantes.Columns["ID"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns["ID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                //dataGridViewComprobantes.Columns["ID"].Visible = false;
+                dataGridViewComprobantes.Columns["ID"].Visible = false;
                 dataGridViewComprobantes.Columns["Serie"].Width = 50;//Serie
                 dataGridViewComprobantes.Columns["Serie"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns["Serie"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -170,7 +201,7 @@ namespace ReimpresionComprobante
                 dataGridViewComprobantes.Columns["FechaEmision"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns["FechaEmision"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns["ID_Cliente"].Visible = false;//ID_Cliente
-                dataGridViewComprobantes.Columns["Cliente"].Width = 150;//Cliente
+                dataGridViewComprobantes.Columns["Cliente"].Width = 200;//Cliente
                 dataGridViewComprobantes.Columns["Cliente"].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dataGridViewComprobantes.Columns["Cliente"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dataGridViewComprobantes.Columns["Moneda"].Width = 75;//Monea
@@ -278,7 +309,7 @@ namespace ReimpresionComprobante
             var cursorActual = Cursor.Current;
             try
             {
-                
+                progressBar1.Value = 10;
                 if (list != null)
                 {
                     if (list.Count > 0)
@@ -293,30 +324,35 @@ namespace ReimpresionComprobante
                             Configuraciones.EnviarImprimir = false;
                         }
                         int rowindex = dataGridViewComprobantes.CurrentCell.RowIndex;
-                        int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells["ID"].Value.ToString());                        
+                        int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells["ID"].Value.ToString());
+                        progressBar1.Value = 30;
                         string elxml = reimpre.GetXmlComprobante(idCompro, inmobiliariaSeleccionada.ID);
+                        System.Threading.Tasks.Task.Delay(20000);
+                        progressBar1.Value = 70;
                         if (!string.IsNullOrEmpty(elxml))
                         {
                             Cursor.Current = cursorActual;
                             MessageBox.Show("Error: " + Environment.NewLine + elxml, "Saari", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                        }                        
                         else
                         {
-                           if(checkBoxCorreo.Checked)
-                           {
+                            progressBar1.Value = 90;
+                            if (checkBoxCorreo.Checked)
+                            {
                                 string idcliente = dataGridViewComprobantes.CurrentRow.Cells["ID_Cliente"].Value.ToString();
                                 string elcorreo = reimpre.EnviarCorreo(idCompro, inmobiliariaSeleccionada.ID, idcliente);
+                               
                                 if (string.IsNullOrEmpty(elcorreo))
-                                {
-                                    //Cursor.Current = cursorActual;
+                                {                                
                                     MessageBox.Show("Exito: " + Environment.NewLine + "Su correo fue enviado de forma exitosa", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 }
                                 else
                                 {
                                     CrearLogError(elcorreo);
                                 }
-                           }                            
+                            }                            
                         }
+                        progressBar1.Value = 100;
                     }
                     else
                     {
@@ -336,6 +372,8 @@ namespace ReimpresionComprobante
             finally
             {
                 Cursor.Current = cursorActual;
+                System.Threading.Tasks.Task.Delay(5000);
+                progressBar1.Value = 0;
             }
         }
 
@@ -348,6 +386,7 @@ namespace ReimpresionComprobante
                 {
                     if (list.Count > 0)
                     {
+                        progressBar1.Value = 20;
                         Cursor.Current = Cursors.WaitCursor;
                         if (checkBoxImpresora.Checked)
                         {
@@ -361,10 +400,14 @@ namespace ReimpresionComprobante
                         int idCompro = Convert.ToInt32(dataGridViewComprobantes.CurrentRow.Cells["ID"].Value.ToString());
                         
                         string idcliente = dataGridViewComprobantes.CurrentRow.Cells["ID_Cliente"].Value.ToString();
+                        progressBar1.Value = 40;
                         string elcorreo = reimpre.EnviarCorreo(idCompro, inmobiliariaSeleccionada.ID, idcliente);
+                        System.Threading.Tasks.Task.Delay(2000);
+                        progressBar1.Value = 70;
                         if (string.IsNullOrEmpty(elcorreo))
                         {
                             Cursor.Current = cursorActual;
+                            progressBar1.Value = 100;
                             MessageBox.Show("Exito: " + Environment.NewLine + "Su correo fue enviado de forma exitosa", "Saari", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
@@ -394,6 +437,8 @@ namespace ReimpresionComprobante
             finally
             {
                 Cursor.Current = cursorActual;
+                System.Threading.Tasks.Task.Delay(5000);
+                progressBar1.Value = 0;
             }
         }
 
